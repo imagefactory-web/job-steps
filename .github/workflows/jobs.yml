@@ -1,28 +1,20 @@
-name: Parallel Job Execution
+name: Display Directory
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:   
 
 jobs:
-  unit-tests:
-    name: Unit Tests
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Running unit tests..."
-      - run: sleep 10
-      - run: echo "Unit tests completed"
+    show-directory:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-  integration-tests:
-    name: Integration Tests
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Running integration tests..."
-      - run: sleep 15
-      - run: echo "Integration tests completed"
-
-  linting:
-    name: Code Linting
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "Running linter..."
-      - run: sleep 5
-      - run: echo "Linting completed"
+            - name: List files in workspace
+              run: ls -la ${{ github.workspace }}
