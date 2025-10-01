@@ -24,7 +24,7 @@ jobs:
         run: |
           echo "About to run a command that fails"
           exit 1  # Non-zero exit code fails the step
-        continue-on-error: true  # Continue even if this fails
+        # continue-on-error: true  # Continue even if this fails
       
       - name: This runs even if previous failed
         run: echo "Continuing despite previous failure"
