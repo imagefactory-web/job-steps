@@ -1,20 +1,60 @@
-name: Display Directory
+name: Working Directory and Shell
 
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:   
+on: [push]
 
 jobs:
-    show-directory:
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+  directory-demo:
+    name: Working Directory Example
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Create project structure
+        run: |
+          mkdir -p frontend backend scripts
+          echo "Frontend code" > frontend/index.html
+          echo "Backend code" > backend/server.js
+          echo "Script content" > scripts/deploy.sh
+      
+      - name: Work in frontend directory
+        working-directory: ./frontend
+        run: |
+          echo "Current directory: $(pwd)"
+          ls -la
+      
+      - name: Work in backend directory
+        working-directory: ./backend
+        run: |
+          echo "Current directory: $(pwd)"
+          ls -la
+      
+      - name: Custom shell example
+        shell: bash
+        run: |
+          echo "Using bash shell"
+          # Bash-specific syntax
+          if [[ "hello" == "hello" ]]; then
+              echo "Bash condition works"
+            fi
 
-            - name: List files in workspace
-              run: ls -la ${{ github.workspace }}
+  windows-shell:
+    name: Windows Shell Examples
+    runs-on: windows-latest
+    
+    steps:
+      - name: PowerShell example
+        shell: pwsh
+        run: |
+          Write-Host "Using PowerShell"
+          Get-ChildItem
+          $version = $PSVersionTable.PSVersion
+          Write-Host "PowerShell version: $version"
+      
+      - name: CMD example
+        shell: cmd
+        run: |
+          echo "Using Command Prompt"
+          dir
+          ver
